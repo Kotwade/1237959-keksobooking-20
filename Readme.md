@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Илья Котиков](https://up.htmlacademy.ru/javascript/20/user/1237959).
-* Наставник: [Алексей Михеев](https://htmlacademy.ru/profile/id454457).
+* Наставник: [Алексей  Михеев](https://htmlacademy.ru/profile/id454457).
 
 ---
 
