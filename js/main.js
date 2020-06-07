@@ -5,6 +5,31 @@ var PinSize = {
   HEIGHT: 70
 };
 
+var LocationX = {
+  X_MIN: 200,
+  X_MAX: 500
+};
+
+var LocationY = {
+  Y_MIN: 130,
+  Y_MAX: 630
+};
+
+var Price = {
+  PRICE_MIN: 10000,
+  PRICE_MAX: 20000
+};
+
+var Rooms = {
+  ROOMS_MIN: 1,
+  ROOMS_MAX: 5
+};
+
+var Guests = {
+  GUESTS_MIN: 1,
+  GUESTS_MAX: 10
+};
+
 var PHOTOS_VALUES = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
@@ -49,7 +74,7 @@ var DESCRIPTION_VALUES = [
 ];
 
 var getRandomValue = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return Math.floor(min + Math.random() * (max - min));
 };
 
 
@@ -59,7 +84,7 @@ var getRandomItem = function (items) {
 };
 
 var getAvatarValue = function (index) {
-  return 'img/avatars/user0' + (index + 1) + '.png';
+  return 'img/avatars/user0' + (++index) + '.png';
 };
 
 
@@ -71,10 +96,10 @@ var getPoint = function (elementIndex) {
     offer: {
       title: getRandomItem(TITLE_VALUES),
       address: '600, 350',
-      price: getRandomValue(10000, 20000),
+      price: getRandomValue(Price.PRICE_MIN, Price.PRICE_MAX),
       type: getRandomItem(POINT_TYPES),
-      rooms: getRandomValue(1, 5),
-      guests: getRandomValue(1, 10),
+      rooms: getRandomValue(Rooms.ROOMS_MIN, Rooms.ROOMS_MAX),
+      guests: getRandomValue(Guests.GUESTS_MIN, Guests.GUESTS_MAX),
       checkin: getRandomItem(CHECKIN_VALUES),
       checkout: getRandomItem(CHECKIN_VALUES),
       features: getRandomItem(FEATURES_VALUES),
@@ -82,8 +107,8 @@ var getPoint = function (elementIndex) {
       photos: getRandomItem(PHOTOS_VALUES)
     },
     location: {
-      x: getRandomValue(200, 500),
-      y: getRandomValue(130, 630)
+      x: getRandomValue(LocationX.X_MIN, LocationX.X_MAX),
+      y: getRandomValue(LocationY.Y_MIN, LocationY.Y_MAX)
     }
   };
 
