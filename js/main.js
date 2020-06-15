@@ -73,6 +73,10 @@ var DESCRIPTION_VALUES = [
   'Дом всё включено'
 ];
 
+var LEFT_MOUSE_CODE = 0;
+
+var isActiveState = false;
+
 var getRandomValue = function (min, max) {
   return Math.floor(min + Math.random() * (max - min));
 };
@@ -129,7 +133,13 @@ var getRandomPoints = function (count) {
 
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+//map.classList.remove('map--faded');
+
+var adFormHeader = document.querySelector('.ad-form-header');
+var adFormElement = document.querySelectorAll('.ad-form__element');
+var mapFilter = document.querySelectorAll('.map__filter');
+var mapFeatures = document.querySelector('.map__features');
+var mapPinMain = document.querySelector('.map__pin--main');
 
 var pointTemplate = document.querySelector('#pin')
   .content
@@ -155,7 +165,44 @@ var renderPoints = function (points) {
   pointsContainer.appendChild(fragment);
 };
 
-var randomPoints = getRandomPoints(8);
-renderPoints(randomPoints);
+var changeActivesState = function () {
+  if (isActiveState === false) {
+    adFormHeader.setAttribute('disabled', true);
+    mapFeatures.setAttribute('disabled', true);
+    for (var i = 0; i < adFormElement.length; i++) {
+      adFormElement[i].setAttribute('disabled', true);
+    }
+    for (var j = 0; j < mapFilter.length; j++) {
+      mapFilter[j].setAttribute('disabled', true);
+    }
+  } else {
+    adFormHeader.removeAttribute('disabled');
+    mapFeatures.removeAttribute('disabled');
+    for (var k = 0; k < adFormElement.length; k++) {
+      adFormElement[k].removeAttribute('disabled');
+    }
+    for (var n = 0; n < mapFilter.length; n++) {
+      mapFilter[n].removeAttribute('disabled');
+    }
+  }
+};
+
+var initEvents = function () {
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    if (evt.button === LEFT_MOUSE_CODE && isActiveState === false) {
+      isActiveState = true;
+      map.classList.remove('map--faded');
+      var randomPoints = getRandomPoints(8);
+      renderPoints(randomPoints);
+    }
+  });
+};
+
+initEvents();
+
+changeActivesState();
+
+//var randomPoints = getRandomPoints(8);
+//renderPoints(randomPoints);
 
 
