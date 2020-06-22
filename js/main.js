@@ -73,6 +73,20 @@ var DESCRIPTION_VALUES = [
   'Дом всё включено'
 ];
 
+var RoomType = {
+  ONE: '1',
+  TWO: '2',
+  THREE: '3',
+  FOUR: '100'
+};
+
+var CapacityType = {
+  ONE: '1',
+  TWO: '2',
+  THREE: '3',
+  FOUR: '0'
+};
+
 var LEFT_MOUSE_CODE = 0;
 var ENTER_KEY_CODE = 'Enter';
 
@@ -144,8 +158,6 @@ var mapPinMain = document.querySelector('.map__pin--main');
 
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
-var roomValue = roomNumber.value;
-var capacityValue = capacity.value;
 
 var pointTemplate = document.querySelector('#pin')
   .content
@@ -204,13 +216,22 @@ var initEvents = function (randomPoints) {
 };
 
 var validateCapacity = function () {
-  if (roomValue === 1 && capacityValue !== 1) {
+  var roomValue = roomNumber.value;
+  var capacityValue = capacity.value;
+
+  if (roomValue === RoomType.ONE && capacityValue !== CapacityType.ONE) {
     capacity.setCustomValidity('выберите не более 1 гостя');
+  } else if (roomValue === RoomType.TWO && capacityValue !== CapacityType.ONE && capacityValue !== CapacityType.TWO) {
+    capacity.setCustomValidity('выберите не более 2 гостей');
+  } else if (roomValue === RoomType.THREE && capacityValue === CapacityType.FOUR) {
+    capacity.setCustomValidity('выберите не более 3 гостей');
+  } else if (roomValue === RoomType.FOUR && capacityValue !== CapacityType.FOUR) {
+    capacity.setCustomValidity('выберите не для гостей');
   }
 };
 
 form.addEventListener('change', function (evt) {
-  if (evt.target.id === 'capacity' || evt.target.id === 'room_number') {
+  if (evt.target.id === capacity.id || evt.target.id === roomNumber.id) {
     validateCapacity();
   }
 });
@@ -218,6 +239,8 @@ form.addEventListener('change', function (evt) {
 var randomPoints = getRandomPoints(8);
 
 initEvents(randomPoints);
+
+validateCapacity();
 
 changeActivesState();
 
