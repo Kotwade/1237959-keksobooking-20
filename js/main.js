@@ -87,6 +87,11 @@ var CapacityType = {
   FOUR: '0'
 };
 
+var MAP_PIN_DEFAULT_LOCATION_X = 570;
+var MAP_PIN_WIDTH = 62;
+var MAP_PIN_DEFAULT_LOCATION_Y = 375;
+var MAP_PIN_TRIANGLE_HEIGHT = 22;
+
 var LEFT_MOUSE_CODE = 0;
 var ENTER_KEY_CODE = 'Enter';
 
@@ -155,6 +160,7 @@ var adFormElements = document.querySelectorAll('.ad-form__element');
 var mapFilters = document.querySelectorAll('.map__filter');
 var mapFeatures = document.querySelector('.map__features');
 var mapPinMain = document.querySelector('.map__pin--main');
+var addressInput = document.querySelector('#address');
 
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
@@ -200,6 +206,7 @@ var startActiveMod = function () {
   form.classList.remove('ad-form--disabled');
   renderPoints(randomPoints);
   changeActivesState();
+  createMainPinLocation();
 };
 
 var initEvents = function (randomPoints) {
@@ -227,6 +234,8 @@ var validateCapacity = function () {
     capacity.setCustomValidity('выберите не более 3 гостей');
   } else if (roomValue === RoomType.FOUR && capacityValue !== CapacityType.FOUR) {
     capacity.setCustomValidity('выберите не для гостей');
+  } else {
+    capacity.setCustomValidity('');
   }
 };
 
@@ -236,11 +245,25 @@ form.addEventListener('change', function (evt) {
   }
 });
 
+var createMainPinLocation = function () {
+  var mainPinLocationX = (MAP_PIN_WIDTH / 2) + MAP_PIN_DEFAULT_LOCATION_X;
+  var mainPinLocationY = (MAP_PIN_WIDTH / 2) + MAP_PIN_DEFAULT_LOCATION_Y;
+  if (isActiveState === true) {
+    mainPinLocationY = MAP_PIN_WIDTH + MAP_PIN_DEFAULT_LOCATION_Y + MAP_PIN_TRIANGLE_HEIGHT;
+  }
+  addressInput.value = mainPinLocationX + ', ' + mainPinLocationY;
+};
+
+var pageLoad = function () {
+  createMainPinLocation();
+  validateCapacity();
+  changeActivesState();
+};
+
 var randomPoints = getRandomPoints(8);
+
+pageLoad();
 
 initEvents(randomPoints);
 
-validateCapacity();
-
-changeActivesState();
 
