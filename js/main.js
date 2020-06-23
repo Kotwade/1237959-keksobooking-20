@@ -248,7 +248,7 @@ form.addEventListener('change', function (evt) {
 var createMainPinLocation = function () {
   var mainPinLocationX = (MAP_PIN_WIDTH / 2) + MAP_PIN_DEFAULT_LOCATION_X;
   var mainPinLocationY = (MAP_PIN_WIDTH / 2) + MAP_PIN_DEFAULT_LOCATION_Y;
-  if (isActiveState === true) {
+  if (isActiveState) {
     mainPinLocationY = MAP_PIN_WIDTH + MAP_PIN_DEFAULT_LOCATION_Y + MAP_PIN_TRIANGLE_HEIGHT;
   }
   addressInput.value = mainPinLocationX + ', ' + mainPinLocationY;
