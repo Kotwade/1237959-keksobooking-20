@@ -21,14 +21,14 @@
     FOUR: '0'
   };
 
-  var changeActivesState = function () {
-    adFormHeader.disabled = !window.map.isActiveState;
-    mapFeatures.disabled = !window.map.isActiveState;
+  var changeActivesState = function (isActiveState) {
+    adFormHeader.disabled = !isActiveState;
+    mapFeatures.disabled = !isActiveState;
     Array.from(adFormElements).forEach(function (element) {
-      element.disabled = !window.map.isActiveState;
+      element.disabled = !isActiveState;
     });
     Array.from(mapFilters).forEach(function (element) {
-      element.disabled = !window.map.isActiveState;
+      element.disabled = !isActiveState;
     });
   };
 
