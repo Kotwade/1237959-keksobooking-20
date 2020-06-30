@@ -42,6 +42,7 @@
     initEvents: initEvents,
     getActiveState: getActiveState,
     adForm: adForm,
-    randomPoints: randomPoints
+    randomPoints: randomPoints,
+    mapPinMain: mapPinMain
   };
 })();

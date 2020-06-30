@@ -7,6 +7,7 @@
   var mapFeatures = document.querySelector('.map__features');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
+  var addressInput = document.querySelector('#address');
   var RoomType = {
     ONE: '1',
     TWO: '2',
@@ -57,6 +58,7 @@
 
   window.form = {
     changeActivesState: changeActivesState,
-    validateCapacity: validateCapacity
+    validateCapacity: validateCapacity,
+    addressInput: addressInput
   };
 })();
