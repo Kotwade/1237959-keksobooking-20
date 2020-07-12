@@ -1,51 +1,38 @@
 'use strict';
 
 (function () {
+  var MAX_POINTS_COUNT = 5;
+  var ALL = 'any';
   var housingType = document.querySelector('#housing-type');
+  var formMapFilters = document.querySelector('.map__filters');
   var points = [];
-  var HousType = {
-    ANY: 'any',
-    PALACE: 'palace',
-    FLAT: 'flat',
-    HOUSE: 'house',
-    BUNGALO: 'bungalo'
-  };
 
-  var init = function (points) {
-    points = points;
+  var initialize = function (items) {
+    points = items;
     filterPoint();
+    addFormEvent();
   };
 
-  var filterByType = function () {
-    var housingTypeValue = housingType.value;
-    if (housingTypeValue === HousType.ANY) {
-
-    } else if (housingTypeValue === HousType.PALACE) {
-
-    } else if (housingTypeValue === HousType.FLAT) {
-
-    } else if (housingTypeValue === HousType.HOUSE) {
-
-    } else if (housingTypeValue === HousType.BUNGALO) {
-
-    }
+  var filterByType = function (point) {
+    return housingType.value === ALL || point.offer.type === housingType.value;
   };
 
   var filterPoint = function () {
-    var filtredPoints = points.filter(function (point) {
-      return this.filterByType(point);
-    });
+    var filtredPoints = points.filter(filterByType);
+    if (filtredPoints.length > MAX_POINTS_COUNT) {
+      filtredPoints = filtredPoints.slice(0, MAX_POINTS_COUNT);
+    }
 
-    var displayPoints = filtredPoints.length > 5 ? points.slice(0, 5) : points;
-
-    window.pin.renderPoints(displayPoints);
+    window.pin.renderPoints(filtredPoints);
   };
 
-  var initFormEvent = housingType.addEventListener('change', function () {
-    filterPoint();
-  });
+  var addFormEvent = function () {
+    formMapFilters.addEventListener('change', function () {
+      filterPoint();
+    });
+  };
 
   window.filter = {
-    init: init
+    initialize: initialize
   };
 })();

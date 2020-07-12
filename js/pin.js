@@ -34,11 +34,20 @@
   };
 
   var renderPoints = function (points) {
+    removePoint();
+
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < points.length; i++) {
       fragment.appendChild(renderPoint(points[i]));
     }
     pointsContainer.appendChild(fragment);
+  };
+
+  var removePoint = function () {
+    var displayPoint = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    displayPoint.forEach(function (point) {
+      point.remove();
+    });
   };
 
   window.pin = {

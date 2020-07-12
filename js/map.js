@@ -15,7 +15,7 @@
     isActiveState = true;
     adMap.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    window.backend.load(window.pin.renderPoints);
+    window.backend.load(window.filter.initialize);
     window.form.changeActivesState(isActiveState);
     window.pin.createMainPinLocation();
   };
