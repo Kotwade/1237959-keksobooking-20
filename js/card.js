@@ -7,6 +7,13 @@
 
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
+  var offerTypes = {
+    'bungalo': 'Бунгало',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'palace': 'Дворец'
+  };
+
   var renderPhotos = function (container, photos) {
     if (photos.length === 0) {
       container.remove();
@@ -32,16 +39,16 @@
       return;
     }
 
-    var featuresTemplate = container.querySelectorAll('.popup__feature');
+    var featuresTemplate = container.querySelector('.popup__feature');
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < features.length; i++) {
       var featuresFragment = featuresTemplate.cloneNode(true);
-      featuresFragment.className = 'popup__feature popup__feature' + features[i];
+      featuresFragment.className = 'popup__feature popup__feature--' + features[i];
       fragment.appendChild(featuresFragment);
     }
 
-    container.innerHtml = '';
+    container.innerHTML = '';
     container.appendChild(fragment);
 
     featuresTemplate.remove();
@@ -56,8 +63,9 @@
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + point.offer.checkin + ' , выезд до ' + point.offer.checkout;
     cardElement.querySelector('.popup__description').textContent = point.offer.description;
     cardElement.querySelector('.popup__avatar').src = point.author.avatar;
+    cardElement.querySelector('.popup__type').textContent = offerTypes[point.offer.type];
     renderPhotos(cardElement.querySelector('.popup__photos'), point.offer.photos);
-    renderFeatures(cardElement.querySelectorAll('.popup__feature'), point.offer.features);
+    renderFeatures(cardElement.querySelector('.popup__features'), point.offer.features);
 
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
   };
