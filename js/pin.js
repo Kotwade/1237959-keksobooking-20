@@ -38,9 +38,12 @@
 
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < points.length; i++) {
-      fragment.appendChild(renderPoint(points[i]));
+      var point = points[i];
+      fragment.appendChild(renderPoint(point));
     }
     pointsContainer.appendChild(fragment);
+
+    window.card.showPopup(points[0]);
   };
 
   var removePoint = function () {
