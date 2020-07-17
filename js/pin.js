@@ -42,6 +42,8 @@
       fragment.appendChild(renderPoint(point));
     }
     pointsContainer.appendChild(fragment);
+
+    window.card.showPopup(points[0]);
   };
 
   var removePoint = function () {
