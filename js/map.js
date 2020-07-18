@@ -41,6 +41,7 @@
     initEvents: initEvents,
     getActiveState: getActiveState,
     adForm: adForm,
-    mapPinMain: mapPinMain
+    mapPinMain: mapPinMain,
+    ENTER_KEY_CODE: ENTER_KEY_CODE
   };
 })();

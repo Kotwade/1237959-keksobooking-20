@@ -39,7 +39,9 @@
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < points.length; i++) {
       var point = points[i];
-      fragment.appendChild(renderPoint(point));
+      var pointButton = renderPoint(point);
+      addEvents(pointButton, point);
+      fragment.appendChild(pointButton);
     }
     pointsContainer.appendChild(fragment);
 
@@ -50,6 +52,14 @@
     var displayPoint = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     displayPoint.forEach(function (point) {
       point.remove();
+    });
+  };
+
+  var addEvents = function (pointButton, point) {
+    pointButton.addEventListener('keydown', function (evt) {
+      if (evt.code === window.map.ENTER_KEY_CODE) {
+        window.card.showPopup(point);
+      }
     });
   };
 

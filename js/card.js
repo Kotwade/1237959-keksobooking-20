@@ -7,6 +7,8 @@
 
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
+  var cardElement = null;
+
   var offerTypes = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
@@ -55,7 +57,7 @@
   };
 
   var showPopup = function (point) {
-    var cardElement = cardTemplate.cloneNode(true);
+    cardElement = cardTemplate.cloneNode(true);
     cardElement.querySelector('.popup__title').textContent = point.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = point.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = point.offer.price + ' ₽/ночь';
@@ -70,7 +72,15 @@
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
   };
 
+  var removePopup = function () {
+    if (cardElement !== 0) {
+      cardElement.remove();
+      cardElement = null;
+    }
+  };
+
   window.card = {
-    showPopup: showPopup
+    showPopup: showPopup,
+    removePopup: removePopup
   };
 })();
