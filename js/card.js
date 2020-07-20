@@ -68,19 +68,36 @@
     cardElement.querySelector('.popup__type').textContent = offerTypes[point.offer.type];
     renderPhotos(cardElement.querySelector('.popup__photos'), point.offer.photos);
     renderFeatures(cardElement.querySelector('.popup__features'), point.offer.features);
+    addEvents(cardElement);
 
     mapFiltersContainer.insertAdjacentElement('beforebegin', cardElement);
+  };
+
+  var addEvents = function (popupContainer) {
+    popupContainer.querySelector('.popup__close').addEventListener('click', function () {
+      removePopup();
+    });
+
+    document.addEventListener('keydown', onDocumentKeyDown);
+  };
+
+  var onDocumentKeyDown = function (evt) {
+    if (evt.code === window.utils.ESC_KEY_CODE) {
+      removePopup();
+    }
   };
 
   var removePopup = function () {
     if (cardElement !== 0) {
       cardElement.remove();
       cardElement = null;
+      document.removeEventListener('keydown', onDocumentKeyDown);
     }
   };
 
   window.card = {
     showPopup: showPopup,
-    removePopup: removePopup
+    removePopup: removePopup,
+    offerTypes: offerTypes
   };
 })();

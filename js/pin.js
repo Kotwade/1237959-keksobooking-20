@@ -44,8 +44,6 @@
       fragment.appendChild(pointButton);
     }
     pointsContainer.appendChild(fragment);
-
-    window.card.showPopup(points[0]);
   };
 
   var removePoint = function () {
@@ -57,7 +55,12 @@
 
   var addEvents = function (pointButton, point) {
     pointButton.addEventListener('keydown', function (evt) {
-      if (evt.code === window.map.ENTER_KEY_CODE) {
+      if (evt.code === window.utils.ENTER_KEY_CODE) {
+        window.card.showPopup(point);
+      }
+    });
+    pointButton.addEventListener('mousedown', function (evt) {
+      if (evt.button === window.utils.LEFT_MOUSE_CODE) {
         window.card.showPopup(point);
       }
     });
