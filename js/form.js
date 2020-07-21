@@ -14,6 +14,21 @@
   var timeInInput = document.querySelector('#timein');
   var timeOutInput = document.querySelector('#timeout');
 
+  var offerTypesValues = {
+    'bungalo': {
+      minLimit: 0
+    },
+    'flat': {
+      minLimit: 1000
+    },
+    'house': {
+      minLimit: 5000
+    },
+    'palace': {
+      minLimit: 10000
+    }
+  };
+
   var RoomType = {
     ONE: '1',
     TWO: '2',
@@ -51,13 +66,23 @@
     }
   });
 
+  priceInput.addEventListener('invalid', function () {
+    var housingValue = typeSelect.value;
+
+    var minLimit = offerTypesValues[housingValue].minLimit;
+    if (priceInput.getAttribute('placeholder') < minLimit) {
+      priceInput.setCustomValidity('Цена меньше минимальной');
+    } else {
+      priceInput.setCustomValidity('');
+    }
+  });
+
   var validateHousing = function () {
     var housingValue = typeSelect.value;
 
-    if (housingValue === window.card.offerTypes.bungalo) {
-      priceInput.setAttribute('min', 0);
-      priceInput.setAttribute('placeholder', 0);
-    }
+    var minLimit = offerTypesValues[housingValue].minLimit;
+    priceInput.setAttribute('min', minLimit);
+    priceInput.setAttribute('placeholder', minLimit);
   };
 
   var validateCapacity = function () {
