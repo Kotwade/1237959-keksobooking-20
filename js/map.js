@@ -2,9 +2,6 @@
 
 (function () {
 
-  var LEFT_MOUSE_CODE = 0;
-  var ENTER_KEY_CODE = 'Enter';
-
   var isActiveState = false;
 
   var adMap = document.querySelector('.map');
@@ -22,12 +19,12 @@
 
   var initEvents = function () {
     mapPinMain.addEventListener('mousedown', function (evt) {
-      if (evt.button === LEFT_MOUSE_CODE && !isActiveState) {
+      if (evt.button === window.utils.LEFT_MOUSE_CODE && !isActiveState) {
         startActiveMode();
       }
     });
     mapPinMain.addEventListener('keydown', function (evt) {
-      if (evt.code === ENTER_KEY_CODE && !isActiveState) {
+      if (evt.code === window.utils.ENTER_KEY_CODE && !isActiveState) {
         startActiveMode();
       }
     });
