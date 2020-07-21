@@ -67,21 +67,19 @@
     titleInput.setCustomValidity(message);
   });
 
-  priceInput.addEventListener('input', function () {
+  var validatePrice = function () {
     var housingValue = typeSelect.value;
     var priceValue = priceInput.value;
 
     var minLimit = offerTypesValues[housingValue].minLimit;
-    var message = '';
 
-    if (priceValue < minLimit) {
-      message = 'Цена должна быть не меньше чем ' + minLimit;
-    }
+    var message = priceValue < minLimit ? 'Цена должна быть не меньше чем ' + minLimit : '';
+
 
     priceInput.setCustomValidity(message);
-  });
+  };
 
-  var validateHousing = function () {
+  var updateHousing = function () {
     var housingValue = typeSelect.value;
 
     var minLimit = offerTypesValues[housingValue].minLimit;
@@ -93,46 +91,40 @@
     var roomValue = roomNumber.value;
     var capacityValue = capacity.value;
 
+    var message = '';
+
     if (roomValue === RoomType.ONE && capacityValue !== CapacityType.ONE) {
-      capacity.setCustomValidity('выберите не более 1 гостя');
+      message = 'выберите не более 1 гостя';
     } else if (roomValue === RoomType.TWO && capacityValue !== CapacityType.ONE && capacityValue !== CapacityType.TWO) {
-      capacity.setCustomValidity('выберите не более 2 гостей');
+      message = 'выберите не более 2 гостей';
     } else if (roomValue === RoomType.THREE && capacityValue === CapacityType.FOUR) {
-      capacity.setCustomValidity('выберите не более 3 гостей');
+      message = 'выберите не более 3 гостей';
     } else if (roomValue === RoomType.FOUR && capacityValue !== CapacityType.FOUR) {
-      capacity.setCustomValidity('выберите не для гостей');
-    } else {
-      capacity.setCustomValidity('');
+      message = 'выберите не для гостей';
     }
+    capacity.setCustomValidity(message);
   };
 
   window.map.adForm.addEventListener('change', function (evt) {
     if (evt.target.id === capacity.id || evt.target.id === roomNumber.id) {
       validateCapacity();
-    } else if (evt.target.id === typeSelect.id) {
-      validateHousing();
     } else if (evt.target.id === timeInInput.id) {
       timeOutInput.value = timeInInput.value;
     } else if (evt.target.id === timeOutInput.id) {
       timeInInput.value = timeOutInput.value;
     } else if (evt.target.id === typeSelect.id) {
-      var housingValue = typeSelect.value;
-      var priceValue = priceInput.value;
-
-      var minLimit = offerTypesValues[housingValue].minLimit;
-      var message = '';
-
-      if (priceValue < minLimit) {
-        message = 'Цена должна быть не меньше чем ' + minLimit;
-      }
-
-      priceInput.setCustomValidity(message);
+      updateHousing();
+      validatePrice();
+    } else if (evt.target.id === typeSelect.id || evt.target.id === priceInput.id) {
+      validatePrice();
     }
   });
+
 
   window.form = {
     changeActivesState: changeActivesState,
     validateCapacity: validateCapacity,
-    addressInput: addressInput
+    addressInput: addressInput,
+    updateHousing: updateHousing
   };
 })();
