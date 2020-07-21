@@ -54,27 +54,31 @@
     });
   };
 
-  titleInput.addEventListener('invalid', function () {
+  titleInput.addEventListener('input', function () {
+    var message = '';
+
     if (titleInput.validity.tooShort) {
-      titleInput.setCustomValidity('Заголовок должен состоять минимум из 30-ти символов');
+      message = 'Заголовок должен состоять минимум из 30-ти символов';
     } else if (titleInput.validity.tooLong) {
-      titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
+      message = 'Заголовок не должен превышать 100 символов';
     } else if (titleInput.validity.valueMissing) {
-      titleInput.setCustomValidity('Обязательное поле');
-    } else {
-      titleInput.setCustomValidity('');
+      message = 'Обязательное поле';
     }
+    titleInput.setCustomValidity(message);
   });
 
-  priceInput.addEventListener('invalid', function () {
+  priceInput.addEventListener('input', function () {
     var housingValue = typeSelect.value;
+    var priceValue = priceInput.value;
 
     var minLimit = offerTypesValues[housingValue].minLimit;
-    if (priceInput.getAttribute('placeholder') < minLimit) {
-      priceInput.setCustomValidity('Цена меньше минимальной');
-    } else {
-      priceInput.setCustomValidity('');
+    var message = '';
+
+    if (priceValue < minLimit) {
+      message = 'Цена должна быть не меньше чем ' + minLimit;
     }
+
+    priceInput.setCustomValidity(message);
   });
 
   var validateHousing = function () {
@@ -111,6 +115,18 @@
       timeOutInput.value = timeInInput.value;
     } else if (evt.target.id === timeOutInput.id) {
       timeInInput.value = timeOutInput.value;
+    } else if (evt.target.id === typeSelect.id) {
+      var housingValue = typeSelect.value;
+      var priceValue = priceInput.value;
+
+      var minLimit = offerTypesValues[housingValue].minLimit;
+      var message = '';
+
+      if (priceValue < minLimit) {
+        message = 'Цена должна быть не меньше чем ' + minLimit;
+      }
+
+      priceInput.setCustomValidity(message);
     }
   });
 
