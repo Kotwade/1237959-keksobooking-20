@@ -2,24 +2,24 @@
 
 (function () {
 
+  var LimitX = {
+    MIN: 0,
+    MAX: document.querySelector('.map__pins').getBoundingClientRect().width
+  };
+
+  var LimitY = {
+    MIN: 130,
+    MAX: 630
+  };
+
+  var MAP_PIN_WIDTH = 62;
+  var MAP_PIN_TRIANGLE_HEIGHT = 22;
+
   var isActiveState = false;
 
   var adMap = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var mapPins = document.querySelector('.map__pins');
-
-  var MAP_PIN_WIDTH = 62;
-  var MAP_PIN_TRIANGLE_HEIGHT = 22;
-
-  var POSITION_X_MIN = 0;
-
-  var domRectRight = mapPins.getBoundingClientRect();
-
-  var PositionOfY = {
-    MIN: 130,
-    MAX: 630
-  };
 
   var startActiveMode = function () {
     isActiveState = true;
@@ -80,7 +80,7 @@
 
         var coord = getMainPinLocationPosition(positionX, positionY);
 
-        var isCoordValid = coord.x >= POSITION_X_MIN && coord.x <= domRectRight.width && coord.y >= PositionOfY.MIN && coord.y <= PositionOfY.MAX;
+        var isCoordValid = coord.x >= LimitX.MIN && coord.x <= LimitX.MAX && coord.y >= LimitY.MIN && coord.y <= LimitY.MAX;
 
         if (isCoordValid) {
           window.form.updateAddressInput(coord.x, coord.y);
