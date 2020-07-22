@@ -120,11 +120,16 @@
     }
   });
 
+  var updateAddressInput = function (x, y) {
+    addressInput.value = x + ', ' + y;
+  };
+
 
   window.form = {
     changeActivesState: changeActivesState,
     validateCapacity: validateCapacity,
     addressInput: addressInput,
-    updateHousing: updateHousing
+    updateHousing: updateHousing,
+    updateAddressInput: updateAddressInput
   };
 })();
