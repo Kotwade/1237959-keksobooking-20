@@ -7,9 +7,19 @@
   var adMap = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var mapPins = document.querySelector('.map__pins');
 
   var MAP_PIN_WIDTH = 62;
   var MAP_PIN_TRIANGLE_HEIGHT = 22;
+
+  var POSITION_X_MIN = 0;
+
+  var domRectRight = mapPins.getBoundingClientRect();
+
+  var PositionOfY = {
+    MIN: 130,
+    MAX: 630
+  };
 
   var startActiveMode = function () {
     isActiveState = true;
@@ -21,10 +31,10 @@
   };
 
   var getMainPinLocationPosition = function (left, top) {
-    var mainPinLocationX = (MAP_PIN_WIDTH / 2) + mapPinMain.offsetLeft;
-    var mainPinLocationY = (MAP_PIN_WIDTH / 2) + mapPinMain.offsetTop;
+    var mainPinLocationX = (MAP_PIN_WIDTH / 2) + left;
+    var mainPinLocationY = (MAP_PIN_WIDTH / 2) + top;
     if (window.map.getActiveState()) {
-      mainPinLocationY = MAP_PIN_WIDTH + mapPinMain.offsetTop + MAP_PIN_TRIANGLE_HEIGHT;
+      mainPinLocationY = MAP_PIN_WIDTH + top + MAP_PIN_TRIANGLE_HEIGHT;
     }
 
     return {x: mainPinLocationX, y: mainPinLocationY};
@@ -70,7 +80,7 @@
 
         var coord = getMainPinLocationPosition(positionX, positionY);
 
-        var isCoordValid = coord.x >= 0 && coord.x <= 1200 && coord.y >= 130 && coord.y <= 630;
+        var isCoordValid = coord.x >= POSITION_X_MIN && coord.x <= domRectRight.width && coord.y >= PositionOfY.MIN && coord.y <= PositionOfY.MAX;
 
         if (isCoordValid) {
           window.form.updateAddressInput(coord.x, coord.y);
