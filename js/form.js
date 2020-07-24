@@ -19,6 +19,14 @@
   .content
   .querySelector('.success');
 
+  var errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+  var errorElement = null;
+
+  var successElement = null;
+
   var offerTypesValues = {
     'bungalo': {
       minLimit: 0
@@ -125,18 +133,24 @@
     }
   });
 
+  var onLoadSuccess = function () {
+    showSuccessPopup();
+  };
+
   var showSuccessPopup = function () {
-    var successElement = successTemplate.cloneNode(true);
+    successElement = successTemplate.cloneNode(true);
     addEvents(successElement);
 
     document.querySelector('main').insertAdjacentElement('beforebegin', successElement);
   };
 
   var addEvents = function () {
-    document.addEventListener('click', function () {
-      removeSuccessPopup();
-    });
+    document.addEventListener('click', onDocumentClick);
     document.addEventListener('keydown', onDocumentKeyDown);
+  };
+
+  var onDocumentClick = function () {
+    removeSuccessPopup();
   };
 
   var onDocumentKeyDown = function (evt) {
@@ -147,12 +161,47 @@
 
   var removeSuccessPopup = function () {
     successElement.remove();
+    successElement = null;
     document.removeEventListener('keydown', onDocumentKeyDown);
+    document.removeEventListener('click', onDocumentClick);
+  };
+
+  var onLoadError = function () {
+    showErrorPopup();
+  };
+
+  var showErrorPopup = function () {
+    errorElement = errorTemplate.cloneNode(true);
+    addEventsError(errorElement);
+
+    document.querySelector('main').insertAdjacentElement('beforebegin', errorElement);
+  };
+
+  var addEventsError = function () {
+    document.addEventListener('click', onDocumentClickError);
+    document.addEventListener('keydown', onDocumentKeyDownError);
+  };
+
+  var onDocumentClickError = function () {
+    removeErrorPopup();
+  };
+
+  var onDocumentKeyDownError = function (evt) {
+    if (evt.code === window.utils.ESC_KEY_CODE) {
+      removeErrorPopup();
+    }
+  };
+
+  var removeErrorPopup = function () {
+    errorElement.remove();
+    errorElement = null;
+    document.removeEventListener('keydown', onDocumentKeyDownError);
+    document.removeEventListener('click', onDocumentClickError);
   };
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(adForm));
+    window.backend.save(new FormData(adForm), onLoadSuccess, onLoadError);
   });
 
   var updateAddressInput = function (x, y) {
