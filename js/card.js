@@ -57,6 +57,7 @@
   };
 
   var showPopup = function (point) {
+    removePopup();
     cardElement = cardTemplate.cloneNode(true);
     cardElement.querySelector('.popup__title').textContent = point.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = point.offer.address;
@@ -88,7 +89,7 @@
   };
 
   var removePopup = function () {
-    if (cardElement !== 0) {
+    if (cardElement !== null) {
       cardElement.remove();
       cardElement = null;
       document.removeEventListener('keydown', onDocumentKeyDown);

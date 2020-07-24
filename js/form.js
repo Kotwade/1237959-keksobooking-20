@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var adForm = document.querySelector('.ad-form');
   var adFormHeader = document.querySelector('.ad-form-header');
   var adFormElements = document.querySelectorAll('.ad-form__element');
   var mapFilters = document.querySelectorAll('.map__filter');
@@ -13,6 +14,10 @@
   var priceInput = document.querySelector('#price');
   var timeInInput = document.querySelector('#timein');
   var timeOutInput = document.querySelector('#timeout');
+
+  var successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
 
   var offerTypesValues = {
     'bungalo': {
@@ -105,7 +110,7 @@
     capacity.setCustomValidity(message);
   };
 
-  window.map.adForm.addEventListener('change', function (evt) {
+  adForm.addEventListener('change', function (evt) {
     if (evt.target.id === capacity.id || evt.target.id === roomNumber.id) {
       validateCapacity();
     } else if (evt.target.id === timeInInput.id) {
@@ -120,6 +125,36 @@
     }
   });
 
+  var showSuccessPopup = function () {
+    var successElement = successTemplate.cloneNode(true);
+    addEvents(successElement);
+
+    document.querySelector('main').insertAdjacentElement('beforebegin', successElement);
+  };
+
+  var addEvents = function () {
+    document.addEventListener('click', function () {
+      removeSuccessPopup();
+    });
+    document.addEventListener('keydown', onDocumentKeyDown);
+  };
+
+  var onDocumentKeyDown = function (evt) {
+    if (evt.code === window.utils.ESC_KEY_CODE) {
+      removeSuccessPopup();
+    }
+  };
+
+  var removeSuccessPopup = function () {
+    successElement.remove();
+    document.removeEventListener('keydown', onDocumentKeyDown);
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(adForm));
+  });
+
   var updateAddressInput = function (x, y) {
     addressInput.value = x + ', ' + y;
   };
@@ -130,6 +165,7 @@
     validateCapacity: validateCapacity,
     addressInput: addressInput,
     updateHousing: updateHousing,
-    updateAddressInput: updateAddressInput
+    updateAddressInput: updateAddressInput,
+    adForm: adForm
   };
 })();

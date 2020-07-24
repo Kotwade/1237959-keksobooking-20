@@ -18,13 +18,12 @@
   var isActiveState = false;
 
   var adMap = document.querySelector('.map');
-  var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
 
   var startActiveMode = function () {
     isActiveState = true;
     adMap.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
+    window.form.adForm.classList.remove('ad-form--disabled');
     window.backend.load(window.filter.initialize);
     window.form.changeActivesState(isActiveState);
     createMainPinLocation();
@@ -122,7 +121,6 @@
   window.map = {
     initEvents: initEvents,
     getActiveState: getActiveState,
-    adForm: adForm,
     mapPinMain: mapPinMain,
     createMainPinLocation: createMainPinLocation
   };
