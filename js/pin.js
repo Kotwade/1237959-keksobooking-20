@@ -56,6 +56,7 @@
   };
 
   window.pin = {
-    renderPoints: renderPoints
+    renderPoints: renderPoints,
+    removePoint: removePoint
   };
 })();

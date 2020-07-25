@@ -12,6 +12,11 @@
     MAX: 630
   };
 
+  var StartMainPinLocation = {
+    LEFT: 570,
+    TOP: 375
+  };
+
   var MAP_PIN_WIDTH = 62;
   var MAP_PIN_TRIANGLE_HEIGHT = 22;
 
@@ -27,6 +32,18 @@
     window.backend.load(window.filter.initialize);
     window.form.changeActivesState(isActiveState);
     createMainPinLocation();
+  };
+
+  var resetActiveMode = function () {
+    isActiveState = false;
+    adMap.classList.add('map--faded');
+    createMainPinLocation();
+    startMainPinPosition();
+  };
+
+  var startMainPinPosition = function () {
+    mapPinMain.style.left = StartMainPinLocation.LEFT + 'px';
+    mapPinMain.style.top = StartMainPinLocation.TOP + 'px';
   };
 
   var getMainPinLocationPosition = function (left, top) {
@@ -122,6 +139,7 @@
     initEvents: initEvents,
     getActiveState: getActiveState,
     mapPinMain: mapPinMain,
-    createMainPinLocation: createMainPinLocation
+    createMainPinLocation: createMainPinLocation,
+    resetActiveMode: resetActiveMode
   };
 })();

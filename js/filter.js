@@ -32,7 +32,12 @@
     });
   };
 
+  var resetFilters = function () {
+    formMapFilters.reset();
+  };
+
   window.filter = {
-    initialize: initialize
+    initialize: initialize,
+    resetFilters: resetFilters
   };
 })();

@@ -14,6 +14,7 @@
   var priceInput = document.querySelector('#price');
   var timeInInput = document.querySelector('#timein');
   var timeOutInput = document.querySelector('#timeout');
+  var resetButton = document.querySelector('.ad-form__reset');
 
   var successTemplate = document.querySelector('#success')
   .content
@@ -135,7 +136,23 @@
 
   var onLoadSuccess = function () {
     showSuccessPopup();
+    deactivate();
   };
+
+  var deactivate = function () {
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    changeActivesState(false);
+    window.filter.resetFilters();
+    window.pin.removePoint();
+    window.map.resetActiveMode();
+  };
+
+  resetButton.addEventListener('mousedown', function (evt) {
+    if (evt.button === window.utils.LEFT_MOUSE_CODE) {
+      deactivate();
+    }
+  });
 
   var showSuccessPopup = function () {
     successElement = successTemplate.cloneNode(true);
