@@ -4,6 +4,7 @@
   var MAX_POINTS_COUNT = 5;
   var ALL = 'any';
   var housingType = document.querySelector('#housing-type');
+  var mapFilters = document.querySelectorAll('.map__filter');
   var formMapFilters = document.querySelector('.map__filters');
   var points = [];
 
@@ -36,8 +37,15 @@
     formMapFilters.reset();
   };
 
+  var changeActivesState = function (isActiveState) {
+    Array.from(mapFilters).forEach(function (element) {
+      element.disabled = !isActiveState;
+    });
+  };
+
   window.filter = {
     initialize: initialize,
-    resetFilters: resetFilters
+    resetFilters: resetFilters,
+    changeActivesState: changeActivesState
   };
 })();

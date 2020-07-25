@@ -29,16 +29,17 @@
     isActiveState = true;
     adMap.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
-    window.backend.load(window.filter.initialize);
     window.form.changeActivesState(isActiveState);
+    window.filter.changeActivesState(isActiveState);
     createMainPinLocation();
+    window.backend.load(window.filter.initialize);
   };
 
   var resetActiveMode = function () {
     isActiveState = false;
     adMap.classList.add('map--faded');
-    createMainPinLocation();
     startMainPinPosition();
+    createMainPinLocation();
   };
 
   var startMainPinPosition = function () {

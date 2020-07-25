@@ -4,7 +4,6 @@
   var adForm = document.querySelector('.ad-form');
   var adFormHeader = document.querySelector('.ad-form-header');
   var adFormElements = document.querySelectorAll('.ad-form__element');
-  var mapFilters = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
@@ -61,9 +60,6 @@
     adFormHeader.disabled = !isActiveState;
     mapFeatures.disabled = !isActiveState;
     Array.from(adFormElements).forEach(function (element) {
-      element.disabled = !isActiveState;
-    });
-    Array.from(mapFilters).forEach(function (element) {
       element.disabled = !isActiveState;
     });
   };
@@ -144,8 +140,10 @@
     adForm.classList.add('ad-form--disabled');
     changeActivesState(false);
     window.filter.resetFilters();
-    window.pin.removePoint();
+    window.filter.changeActivesState(false);
+    window.pin.removePoints();
     window.map.resetActiveMode();
+    window.card.removePopup();
   };
 
   resetButton.addEventListener('mousedown', function (evt) {
@@ -225,12 +223,17 @@
     addressInput.value = x + ', ' + y;
   };
 
+  var initialize = function () {
+    validateCapacity();
+    changeActivesState(false);
+    updateHousing();
+  };
+
 
   window.form = {
+    initialize: initialize,
     changeActivesState: changeActivesState,
-    validateCapacity: validateCapacity,
     addressInput: addressInput,
-    updateHousing: updateHousing,
     updateAddressInput: updateAddressInput,
     adForm: adForm
   };
