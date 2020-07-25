@@ -12,22 +12,39 @@
     MAX: 630
   };
 
+  var StartMainPinLocation = {
+    LEFT: 570,
+    TOP: 375
+  };
+
   var MAP_PIN_WIDTH = 62;
   var MAP_PIN_TRIANGLE_HEIGHT = 22;
 
   var isActiveState = false;
 
   var adMap = document.querySelector('.map');
-  var adForm = document.querySelector('.ad-form');
   var mapPinMain = document.querySelector('.map__pin--main');
 
   var startActiveMode = function () {
     isActiveState = true;
     adMap.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    window.backend.load(window.filter.initialize);
+    window.form.adForm.classList.remove('ad-form--disabled');
     window.form.changeActivesState(isActiveState);
+    window.filter.changeActivesState(isActiveState);
     createMainPinLocation();
+    window.backend.load(window.filter.initialize);
+  };
+
+  var resetActiveMode = function () {
+    isActiveState = false;
+    adMap.classList.add('map--faded');
+    startMainPinPosition();
+    createMainPinLocation();
+  };
+
+  var startMainPinPosition = function () {
+    mapPinMain.style.left = StartMainPinLocation.LEFT + 'px';
+    mapPinMain.style.top = StartMainPinLocation.TOP + 'px';
   };
 
   var getMainPinLocationPosition = function (left, top) {
@@ -122,8 +139,8 @@
   window.map = {
     initEvents: initEvents,
     getActiveState: getActiveState,
-    adForm: adForm,
     mapPinMain: mapPinMain,
-    createMainPinLocation: createMainPinLocation
+    createMainPinLocation: createMainPinLocation,
+    resetActiveMode: resetActiveMode
   };
 })();

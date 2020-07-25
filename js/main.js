@@ -3,8 +3,7 @@
 (function () {
 
   window.map.createMainPinLocation();
-  window.form.validateCapacity();
-  window.form.changeActivesState();
-  window.form.updateHousing();
+  window.form.initialize();
+  window.filter.changeActivesState(false);
   window.map.initEvents();
 })();

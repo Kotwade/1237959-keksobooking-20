@@ -6,6 +6,8 @@
     HEIGHT: 70
   };
 
+  var displayPoints = [];
+
   var pointTemplate = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
@@ -23,7 +25,7 @@
   };
 
   var renderPoints = function (points) {
-    removePoint();
+    removePoints();
 
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < points.length; i++) {
@@ -31,15 +33,17 @@
       var pointButton = renderPoint(point);
       addEvents(pointButton, point);
       fragment.appendChild(pointButton);
+
+      displayPoints.push(pointButton);
     }
     pointsContainer.appendChild(fragment);
   };
 
-  var removePoint = function () {
-    var displayPoint = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    displayPoint.forEach(function (point) {
+  var removePoints = function () {
+    displayPoints.forEach(function (point) {
       point.remove();
     });
+    displayPoints = [];
   };
 
   var addEvents = function (pointButton, point) {
@@ -56,6 +60,7 @@
   };
 
   window.pin = {
-    renderPoints: renderPoints
+    renderPoints: renderPoints,
+    removePoints: removePoints
   };
 })();

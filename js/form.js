@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
+  var adForm = document.querySelector('.ad-form');
   var adFormHeader = document.querySelector('.ad-form-header');
   var adFormElements = document.querySelectorAll('.ad-form__element');
-  var mapFilters = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
@@ -13,6 +13,19 @@
   var priceInput = document.querySelector('#price');
   var timeInInput = document.querySelector('#timein');
   var timeOutInput = document.querySelector('#timeout');
+  var resetButton = document.querySelector('.ad-form__reset');
+
+  var successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+  var errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+  var errorElement = null;
+
+  var successElement = null;
 
   var offerTypesValues = {
     'bungalo': {
@@ -47,9 +60,6 @@
     adFormHeader.disabled = !isActiveState;
     mapFeatures.disabled = !isActiveState;
     Array.from(adFormElements).forEach(function (element) {
-      element.disabled = !isActiveState;
-    });
-    Array.from(mapFilters).forEach(function (element) {
       element.disabled = !isActiveState;
     });
   };
@@ -105,7 +115,7 @@
     capacity.setCustomValidity(message);
   };
 
-  window.map.adForm.addEventListener('change', function (evt) {
+  adForm.addEventListener('change', function (evt) {
     if (evt.target.id === capacity.id || evt.target.id === roomNumber.id) {
       validateCapacity();
     } else if (evt.target.id === timeInInput.id) {
@@ -120,16 +130,111 @@
     }
   });
 
+  var onLoadSuccess = function () {
+    showSuccessPopup();
+    deactivate();
+  };
+
+  var deactivate = function () {
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    changeActivesState(false);
+    window.filter.resetFilters();
+    window.filter.changeActivesState(false);
+    window.pin.removePoints();
+    window.map.resetActiveMode();
+    window.card.removePopup();
+  };
+
+  resetButton.addEventListener('mousedown', function (evt) {
+    if (evt.button === window.utils.LEFT_MOUSE_CODE) {
+      deactivate();
+    }
+  });
+
+  var showSuccessPopup = function () {
+    successElement = successTemplate.cloneNode(true);
+    addEvents(successElement);
+
+    document.querySelector('main').insertAdjacentElement('beforebegin', successElement);
+  };
+
+  var addEvents = function () {
+    document.addEventListener('click', onDocumentClick);
+    document.addEventListener('keydown', onDocumentKeyDown);
+  };
+
+  var onDocumentClick = function () {
+    removeSuccessPopup();
+  };
+
+  var onDocumentKeyDown = function (evt) {
+    if (evt.code === window.utils.ESC_KEY_CODE) {
+      removeSuccessPopup();
+    }
+  };
+
+  var removeSuccessPopup = function () {
+    successElement.remove();
+    successElement = null;
+    document.removeEventListener('keydown', onDocumentKeyDown);
+    document.removeEventListener('click', onDocumentClick);
+  };
+
+  var onLoadError = function () {
+    showErrorPopup();
+  };
+
+  var showErrorPopup = function () {
+    errorElement = errorTemplate.cloneNode(true);
+    addEventsError(errorElement);
+
+    document.querySelector('main').insertAdjacentElement('beforebegin', errorElement);
+  };
+
+  var addEventsError = function () {
+    document.addEventListener('click', onDocumentClickError);
+    document.addEventListener('keydown', onDocumentKeyDownError);
+  };
+
+  var onDocumentClickError = function () {
+    removeErrorPopup();
+  };
+
+  var onDocumentKeyDownError = function (evt) {
+    if (evt.code === window.utils.ESC_KEY_CODE) {
+      removeErrorPopup();
+    }
+  };
+
+  var removeErrorPopup = function () {
+    errorElement.remove();
+    errorElement = null;
+    document.removeEventListener('keydown', onDocumentKeyDownError);
+    document.removeEventListener('click', onDocumentClickError);
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(adForm), onLoadSuccess, onLoadError);
+  });
+
   var updateAddressInput = function (x, y) {
     addressInput.value = x + ', ' + y;
   };
 
+  var initialize = function () {
+    validateCapacity();
+    changeActivesState(false);
+    updateHousing();
+  };
+
 
   window.form = {
+    initialize: initialize,
     changeActivesState: changeActivesState,
-    validateCapacity: validateCapacity,
     addressInput: addressInput,
-    updateHousing: updateHousing,
-    updateAddressInput: updateAddressInput
+    updateAddressInput: updateAddressInput,
+    adForm: adForm
   };
 })();
