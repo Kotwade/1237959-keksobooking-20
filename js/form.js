@@ -27,7 +27,7 @@
 
   var successElement = null;
 
-  var offerTypesValues = {
+  var offerTypesValue = {
     'bungalo': {
       minLimit: 0
     },
@@ -81,7 +81,7 @@
     var housingValue = typeSelect.value;
     var priceValue = priceInput.value;
 
-    var minLimit = offerTypesValues[housingValue].minLimit;
+    var minLimit = offerTypesValue[housingValue].minLimit;
 
     var message = priceValue < minLimit ? 'Цена должна быть не меньше чем ' + minLimit : '';
 
@@ -92,7 +92,7 @@
   var updateHousing = function () {
     var housingValue = typeSelect.value;
 
-    var minLimit = offerTypesValues[housingValue].minLimit;
+    var minLimit = offerTypesValue[housingValue].minLimit;
     priceInput.setAttribute('min', minLimit);
     priceInput.setAttribute('placeholder', minLimit);
   };
@@ -193,11 +193,12 @@
   };
 
   var addEventsError = function () {
-    document.addEventListener('click', onDocumentClickError);
+    var errorButton = errorElement.querySelector('.error__button');
+    errorButton.addEventListener('click', onErrorButtonClick);
     document.addEventListener('keydown', onDocumentKeyDownError);
   };
 
-  var onDocumentClickError = function () {
+  var onErrorButtonClick = function () {
     removeErrorPopup();
   };
 
@@ -211,7 +212,6 @@
     errorElement.remove();
     errorElement = null;
     document.removeEventListener('keydown', onDocumentKeyDownError);
-    document.removeEventListener('click', onDocumentClickError);
   };
 
   adForm.addEventListener('submit', function (evt) {
@@ -235,6 +235,7 @@
     changeActivesState: changeActivesState,
     addressInput: addressInput,
     updateAddressInput: updateAddressInput,
-    adForm: adForm
+    adForm: adForm,
+    showErrorPopup: showErrorPopup
   };
 })();

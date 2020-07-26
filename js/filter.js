@@ -24,7 +24,7 @@
 
   var initialize = function (items) {
     points = items;
-    filterPoint();
+    filterPoints();
     addFormEvent();
   };
 
@@ -55,7 +55,7 @@
     });
   };
 
-  var filterPoint = function () {
+  var filterPoints = function () {
     var filtredPoints = [];
 
     var checkedFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'))
@@ -80,10 +80,9 @@
   };
 
   var addFormEvent = function () {
-    formMapFilters.addEventListener('change', function () {
-      filterPoint();
-      window.debounce(filterPoint);
-    });
+    formMapFilters.addEventListener('change', window.debounce(function () {
+      filterPoints();
+    }));
   };
 
   var resetFilters = function () {
