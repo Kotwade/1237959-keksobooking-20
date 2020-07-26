@@ -15,7 +15,7 @@
     MAX: 630
   };
 
-  var StartMainPinLocation = {
+  var DefaultMainPinPosition = {
     LEFT: 570,
     TOP: 375
   };
@@ -45,8 +45,8 @@
   };
 
   var updateMainPinPosition = function () {
-    mapPinMain.style.left = StartMainPinLocation.LEFT + 'px';
-    mapPinMain.style.top = StartMainPinLocation.TOP + 'px';
+    mapPinMain.style.left = DefaultMainPinPosition.LEFT + 'px';
+    mapPinMain.style.top = DefaultMainPinPosition.TOP + 'px';
   };
 
   var getMainPinLocationPosition = function (left, top) {
