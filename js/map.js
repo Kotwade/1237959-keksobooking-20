@@ -2,6 +2,9 @@
 
 (function () {
 
+  var MAP_PIN_WIDTH = 62;
+  var MAP_PIN_TRIANGLE_HEIGHT = 22;
+
   var LimitX = {
     MIN: 0,
     MAX: document.querySelector('.map__pins').getBoundingClientRect().width
@@ -17,32 +20,31 @@
     TOP: 375
   };
 
-  var MAP_PIN_WIDTH = 62;
-  var MAP_PIN_TRIANGLE_HEIGHT = 22;
-
   var isActiveState = false;
 
   var adMap = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
 
   var startActiveMode = function () {
-    isActiveState = true;
-    adMap.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.changeActivesState(isActiveState);
-    window.filter.changeActivesState(isActiveState);
-    createMainPinLocation();
-    window.backend.load(window.filter.initialize);
+    window.backend.load(function (items) {
+      isActiveState = true;
+      adMap.classList.remove('map--faded');
+      window.form.adForm.classList.remove('ad-form--disabled');
+      window.form.changeActivesState(isActiveState);
+      window.filter.changeActivesState(isActiveState);
+      updateMainPinLocation();
+      window.filter.initialize(items);
+    }, window.form.showErrorPopup);
   };
 
   var resetActiveMode = function () {
     isActiveState = false;
     adMap.classList.add('map--faded');
-    startMainPinPosition();
-    createMainPinLocation();
+    updateMainPinPosition();
+    updateMainPinLocation();
   };
 
-  var startMainPinPosition = function () {
+  var updateMainPinPosition = function () {
     mapPinMain.style.left = StartMainPinLocation.LEFT + 'px';
     mapPinMain.style.top = StartMainPinLocation.TOP + 'px';
   };
@@ -57,12 +59,12 @@
     return {x: mainPinLocationX, y: mainPinLocationY};
   };
 
-  var createMainPinLocation = function () {
+  var updateMainPinLocation = function () {
     var position = getMainPinLocationPosition(mapPinMain.offsetLeft, mapPinMain.offsetTop);
     window.form.updateAddressInput(position.x, position.y);
   };
 
-  var initEvents = function () {
+  var addEvent = function () {
     mapPinMain.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
 
@@ -137,10 +139,10 @@
   };
 
   window.map = {
-    initEvents: initEvents,
+    initEvents: addEvent,
     getActiveState: getActiveState,
     mapPinMain: mapPinMain,
-    createMainPinLocation: createMainPinLocation,
+    updateMainPinLocation: updateMainPinLocation,
     resetActiveMode: resetActiveMode
   };
 })();
