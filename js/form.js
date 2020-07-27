@@ -1,12 +1,19 @@
 'use strict';
 
 (function () {
+  var EMPTY_STRING = '';
+
+  var BorderStyle = {
+    RED: 'solid red 1px',
+    NONE: 'none'
+  };
+
   var adForm = document.querySelector('.ad-form');
   var adFormHeader = document.querySelector('.ad-form-header');
   var adFormElements = document.querySelectorAll('.ad-form__element');
   var mapFeatures = document.querySelector('.map__features');
   var roomNumber = document.querySelector('#room_number');
-  var capacity = document.querySelector('#capacity');
+  var capacitySelect = document.querySelector('#capacity');
   var addressInput = document.querySelector('#address');
   var titleInput = document.querySelector('#title');
   var typeSelect = document.querySelector('#type');
@@ -59,13 +66,20 @@
   var changeActivesState = function (isActiveState) {
     adFormHeader.disabled = !isActiveState;
     mapFeatures.disabled = !isActiveState;
+
+    if (isActiveState) {
+      adForm.classList.remove('ad-form--disabled');
+    } else {
+      adForm.classList.add('ad-form--disabled');
+    }
+
     Array.from(adFormElements).forEach(function (element) {
       element.disabled = !isActiveState;
     });
   };
 
   titleInput.addEventListener('input', function () {
-    var message = '';
+    var message = EMPTY_STRING;
 
     if (titleInput.validity.tooShort) {
       message = 'Заголовок должен состоять минимум из 30-ти символов';
@@ -75,6 +89,11 @@
       message = 'Обязательное поле';
     }
     titleInput.setCustomValidity(message);
+    updateElementStyle(titleInput, message);
+  });
+
+  priceInput.addEventListener('input', function () {
+    validatePrice();
   });
 
   var validatePrice = function () {
@@ -87,6 +106,7 @@
 
 
     priceInput.setCustomValidity(message);
+    updateElementStyle(priceInput, message);
   };
 
   var updateHousing = function () {
@@ -97,11 +117,15 @@
     priceInput.setAttribute('placeholder', minLimit);
   };
 
+  var updateCapacity = function () {
+    capacitySelect.value = CapacityType.ONE;
+  };
+
   var validateCapacity = function () {
     var roomValue = roomNumber.value;
-    var capacityValue = capacity.value;
+    var capacityValue = capacitySelect.value;
 
-    var message = '';
+    var message = EMPTY_STRING;
 
     if (roomValue === RoomType.ONE && capacityValue !== CapacityType.ONE) {
       message = 'выберите не более 1 гостя';
@@ -112,11 +136,16 @@
     } else if (roomValue === RoomType.FOUR && capacityValue !== CapacityType.FOUR) {
       message = 'выберите не для гостей';
     }
-    capacity.setCustomValidity(message);
+    capacitySelect.setCustomValidity(message);
+    updateElementStyle(capacitySelect, message);
+  };
+
+  var updateElementStyle = function (element, message) {
+    element.style.border = message !== EMPTY_STRING ? BorderStyle.RED : BorderStyle.NONE;
   };
 
   adForm.addEventListener('change', function (evt) {
-    if (evt.target.id === capacity.id || evt.target.id === roomNumber.id) {
+    if (evt.target.id === capacitySelect.id || evt.target.id === roomNumber.id) {
       validateCapacity();
     } else if (evt.target.id === timeInInput.id) {
       timeOutInput.value = timeInInput.value;
@@ -124,8 +153,6 @@
       timeInInput.value = timeOutInput.value;
     } else if (evt.target.id === typeSelect.id) {
       updateHousing();
-      validatePrice();
-    } else if (evt.target.id === typeSelect.id || evt.target.id === priceInput.id) {
       validatePrice();
     }
   });
@@ -137,19 +164,21 @@
 
   var deactivate = function () {
     adForm.reset();
-    adForm.classList.add('ad-form--disabled');
     changeActivesState(false);
-    window.filter.resetFilters();
+    window.filter.reset();
+    updateElementStyle(titleInput, EMPTY_STRING);
+    updateElementStyle(priceInput, EMPTY_STRING);
+    updateElementStyle(capacitySelect, EMPTY_STRING);
+    updateCapacity();
+    updateHousing();
     window.filter.changeActivesState(false);
     window.pin.removePoints();
     window.map.resetActiveMode();
     window.card.removePopup();
   };
 
-  resetButton.addEventListener('mousedown', function (evt) {
-    if (evt.button === window.utils.LEFT_MOUSE_CODE) {
-      deactivate();
-    }
+  resetButton.addEventListener('click', function () {
+    deactivate();
   });
 
   var showSuccessPopup = function () {
@@ -224,9 +253,10 @@
   };
 
   var initialize = function () {
-    validateCapacity();
     changeActivesState(false);
     updateHousing();
+    updateCapacity();
+    validateCapacity();
   };
 
 
@@ -235,7 +265,6 @@
     changeActivesState: changeActivesState,
     addressInput: addressInput,
     updateAddressInput: updateAddressInput,
-    adForm: adForm,
     showErrorPopup: showErrorPopup
   };
 })();
