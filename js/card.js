@@ -93,6 +93,7 @@
       cardElement.remove();
       cardElement = null;
       document.removeEventListener('keydown', onDocumentKeyDown);
+      window.pin.removeActivePoint();
     }
   };
 

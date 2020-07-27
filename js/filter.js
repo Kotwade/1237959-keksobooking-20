@@ -97,7 +97,7 @@
 
   window.filter = {
     initialize: initialize,
-    resetFilters: resetFilters,
+    reset: resetFilters,
     changeActivesState: changeActivesState
   };
 })();

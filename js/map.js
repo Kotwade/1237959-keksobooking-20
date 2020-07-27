@@ -26,15 +26,18 @@
   var mapPinMain = document.querySelector('.map__pin--main');
 
   var startActiveMode = function () {
+    isActiveState = true;
+    adMap.classList.remove('map--faded');
+    window.form.changeActivesState(isActiveState);
+    window.filter.changeActivesState(isActiveState);
+    updateMainPinLocation();
+
     window.backend.load(function (items) {
-      isActiveState = true;
-      adMap.classList.remove('map--faded');
-      window.form.adForm.classList.remove('ad-form--disabled');
-      window.form.changeActivesState(isActiveState);
-      window.filter.changeActivesState(isActiveState);
-      updateMainPinLocation();
       window.filter.initialize(items);
-    }, window.form.showErrorPopup);
+    }, function () {
+      isActiveState = false;
+      window.form.showErrorPopup();
+    });
   };
 
   var resetActiveMode = function () {
