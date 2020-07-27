@@ -9,6 +9,7 @@
   };
 
   var adForm = document.querySelector('.ad-form');
+  var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var adFormHeader = document.querySelector('.ad-form-header');
   var adFormElements = document.querySelectorAll('.ad-form__element');
   var mapFeatures = document.querySelector('.map__features');
@@ -78,7 +79,7 @@
     });
   };
 
-  titleInput.addEventListener('input', function () {
+  var validateTitle = function () {
     var message = EMPTY_STRING;
 
     if (titleInput.validity.tooShort) {
@@ -90,6 +91,10 @@
     }
     titleInput.setCustomValidity(message);
     updateElementStyle(titleInput, message);
+  };
+
+  titleInput.addEventListener('input', function () {
+    validateTitle();
   });
 
   priceInput.addEventListener('input', function () {
@@ -115,10 +120,6 @@
     var minLimit = offerTypesValue[housingValue].minLimit;
     priceInput.setAttribute('min', minLimit);
     priceInput.setAttribute('placeholder', minLimit);
-  };
-
-  var updateCapacity = function () {
-    capacitySelect.value = CapacityType.ONE;
   };
 
   var validateCapacity = function () {
@@ -169,7 +170,6 @@
     updateElementStyle(titleInput, EMPTY_STRING);
     updateElementStyle(priceInput, EMPTY_STRING);
     updateElementStyle(capacitySelect, EMPTY_STRING);
-    updateCapacity();
     updateHousing();
     window.filter.changeActivesState(false);
     window.pin.removePoints();
@@ -183,12 +183,12 @@
 
   var showSuccessPopup = function () {
     successElement = successTemplate.cloneNode(true);
-    addEvents(successElement);
+    addPopupEvents(successElement);
 
     document.querySelector('main').insertAdjacentElement('beforebegin', successElement);
   };
 
-  var addEvents = function () {
+  var addPopupEvents = function () {
     document.addEventListener('click', onDocumentClick);
     document.addEventListener('keydown', onDocumentKeyDown);
   };
@@ -243,10 +243,18 @@
     document.removeEventListener('keydown', onDocumentKeyDownError);
   };
 
-  adForm.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    window.backend.save(new FormData(adForm), onLoadSuccess, onLoadError);
-  });
+  var addEvents = function () {
+    adForm.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.backend.save(new FormData(adForm), onLoadSuccess, onLoadError);
+    });
+
+    adFormSubmit.addEventListener('click', function () {
+      validateTitle();
+      validatePrice();
+      validateCapacity();
+    });
+  };
 
   var updateAddressInput = function (x, y) {
     addressInput.value = x + ', ' + y;
@@ -255,8 +263,7 @@
   var initialize = function () {
     changeActivesState(false);
     updateHousing();
-    updateCapacity();
-    validateCapacity();
+    addEvents();
   };
 
 
